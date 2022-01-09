@@ -11,7 +11,6 @@ var corsOptions = {
     origin: "https://localhost:8000"
 }
 
-app.use(bodyParser.json())
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))

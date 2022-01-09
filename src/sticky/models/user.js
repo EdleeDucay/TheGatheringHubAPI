@@ -1,27 +1,29 @@
 
 const db = require('../config/database')
 const {DataTypes} = require('sequelize')
+const Sticky = require('./sticky')
 
 const User = db.define('User', {
-    id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false
-    },
-    username: {
-        type: DataTypes.STRING,
-    },
     email: {
         type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
     },
     password: {
         type: DataTypes.STRING,
+        allowNull: false,
     },
-    dateCreated: {
-        type: DataTypes.DATE
-    }
+
 }, {
-    tableName: 'Users'
+    tableName: 'Users',
+    
 })
+
+User.hasMany(Sticky, {
+    sourceKey: 'email',
+    foreignKey: 'userEmail',
+    onDelete: 'CASCADE'
+})
+// Sticky.belongsTo(User, {targetKey: 'email', foreignKey: 'userEmail'})
 
 module.exports = User

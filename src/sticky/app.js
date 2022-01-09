@@ -5,15 +5,18 @@ const users = require('./routes/user')
 const stickies = require('./routes/sticky')
 
 db.authenticate()
-    .then(() => console.log('Database connected...'))
+    .then(() => {
+        console.log('Database connected...')
+        db.sync({ force: true})
+    })
     .catch(err => console.log('Error' + err))
-
-db.sync()
 
 app.use('/users', users)
 app.use('/stickies', stickies)
-// app.get('/', function(request, response) {
-//     response.send("This is the '/' route in sticky app")
-// })
+
+app.post('/', function(request, response) {
+    console.log(request.body)
+    response.send("This is the '/' route in sticky app")
+})
 
 module.exports = app;
