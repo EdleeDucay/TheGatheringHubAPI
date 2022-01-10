@@ -7,7 +7,8 @@ const stickies = require('./routes/sticky')
 db.authenticate()
     .then(() => {
         console.log('Database connected...')
-        db.sync({ force: true})
+        // db.sync({ force: true})
+        db.sync()
     })
     .catch(err => console.log('Error' + err))
 
