@@ -7,7 +7,7 @@ const cors = require("cors")
 const stickyApp = require('./sticky/app')
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8000;
 
 var corsOptions = {
     origin: "https://localhost:8000"
