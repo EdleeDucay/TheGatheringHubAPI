@@ -10,7 +10,6 @@ const Sticky = require('../models/sticky')
  *          Sticky:
  *              type: object
  *              required:
- *                  - title
  *                  - userEmail
  *              properties:
  *                  id:
@@ -19,9 +18,6 @@ const Sticky = require('../models/sticky')
  *                  userEmail:
  *                      type: string
  *                      description: The email of the sticky's author
- *                  title:
- *                      type: string
- *                      description: The name of the user
  *                  body:
  *                      type: string
  *                      description: The email of the user
@@ -42,10 +38,6 @@ const Sticky = require('../models/sticky')
  *              in: body
  *              type: string
  *              required: true
- *          -   name: title
- *              in: body
- *              type: string
- *              required: true
  *          -   name: body 
  *              in: body
  *              type: string
@@ -57,7 +49,7 @@ const Sticky = require('../models/sticky')
  *              description: Data not formatted properly
  */
 router.post('/', (request, response) => {
-    if (!(request.body.title && request.body.userEmail)) {
+    if (!(request.body.userEmail)) {
         return response.status(400).send({error: "Data not formatted properly"})
     }
 
@@ -138,7 +130,6 @@ router.put('/:id', async (request, response) => {
         response.send(`No sticky found with id: ${request.params.id}`)
     } else {
         await sticky.update({
-            title: (request.body.title ? request.body.title : sticky.title),
             body: request.body.body
         })
         await sticky.save()
