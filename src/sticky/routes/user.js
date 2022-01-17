@@ -11,16 +11,12 @@ const res = require('express/lib/response');
  *          User:
  *              type: object
  *              required:
- *                  - username
  *                  - email
  *                  - password
  *              properties:
  *                  id:
  *                      type: string
  *                      description: The id of the user
- *                  username:
- *                      type: string
- *                      description: The name of the user
  *                  email:
  *                      type: string
  *                      description: The email of the user
@@ -40,10 +36,6 @@ const res = require('express/lib/response');
  *      summary: Creates a User
  *      description: Signup a User for the Sticky api
  *      parameters:
- *          -   name: username
- *              in: body
- *              type: string
- *              required: true
  *          -   name: email
  *              in: body
  *              type: string
@@ -54,12 +46,12 @@ const res = require('express/lib/response');
  *              required: true
  *      responses:
  *          201:
- *              description: Returns the message 'User Create Success'
+ *              description: Returns a json with the user's email
  *          400:
  *              description: Data not formatted properly
  */
 router.post('/signup', async (request, response) => {
-    if (!(request.body.email && request.body.password && request.body.username)) {
+    if (!(request.body.email && request.body.password)) {
         return response.status(400).send({error: "Data not formatted properly"})
     }
 
@@ -69,7 +61,9 @@ router.post('/signup', async (request, response) => {
     User.create(request.body)
     .then(() => {
         response.status(201)
-        response.send('User Create Success');
+        response.send({
+            email: user.email
+        });
 
     })
     .catch(error => {
@@ -97,7 +91,7 @@ router.post('/signup', async (request, response) => {
  *              required: true
  *      responses:
  *          200:
- *              description: Returns the message 'Login Successful'
+ *              description: Returns a json with the user's email
  *          400:
  *              description: Returns 'Invalid Password'
  *          401:
@@ -109,7 +103,9 @@ router.post('/login', async (request, response) => {
     if (user) {
         const validPassword = await bcrypt.compare(request.body.password, user.password)
         if (validPassword) {
-            response.status(200).send('Login Successful')
+            response.status(200).send({
+                email: user.email,
+            })
         } else {
             response.status(400).send('Invalid Password')
         }

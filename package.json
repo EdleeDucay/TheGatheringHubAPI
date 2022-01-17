@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec babel-node src/app.js"
+    "start": "nodemon --exec babel-node --max-old-space-size=4096 src/app.js"
   },
   "repository": {
     "type": "git",

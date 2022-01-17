@@ -44,7 +44,13 @@ const Sticky = require('../models/sticky')
  *              required: false
  *      responses:
  *          201:
- *              description: Returns the message 'Sticky Create Success'
+ *              description: Returns the created sticky
+ *              content:
+ *               application/json:
+ *                   schema:
+ *                       type: object
+ *                       $ref: '#/components/schemas/Sticky'
+ * 
  *          400:
  *              description: Data not formatted properly
  */
@@ -54,9 +60,9 @@ router.post('/', (request, response) => {
     }
 
     Sticky.create(request.body)
-    .then(() => {
+    .then((sticky) => {
         response.status(201)
-        response.send('Sticky Create Success')
+        response.send(sticky)
     })
     .catch(error => {
         response.status(400)
@@ -118,7 +124,7 @@ router.get('/:userEmail', async (request, response) => {
 *              required: true
 *      responses:
 *          200:
-*              description: Returns the message 'Sticky has been updated'
+*              description: Returns the updated sticky
 *          204:
 *              description: No sticky found
 */
@@ -134,7 +140,7 @@ router.put('/:id', async (request, response) => {
         })
         await sticky.save()
         response.status(200)
-        response.send('Sticky has been updated')
+        response.send(sticky)
     }
 })
 
@@ -153,7 +159,7 @@ router.put('/:id', async (request, response) => {
 *              required: true
 *      responses:
 *          200:
-*              description: Returns the message 'Sticky has been updated'
+*              description: Returns the message 'Sticky has been deleted'
 *          204:
 *              description: No sticky found
 */
