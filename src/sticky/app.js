@@ -15,7 +15,7 @@ db.authenticate()
 app.use('/users', users)
 app.use('/stickies', stickies)
 
-app.post('/', function(request, response) {
+app.get('/', function(request, response) {
     console.log(request.body)
     response.send("This is the '/' route in sticky app")
 })
