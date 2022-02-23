@@ -17,8 +17,8 @@ var corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-// app.use('/sticky', stickyApp)
-app.use(vhost('api.edleeducay.com/sticky', stickyApp))
+app.use('/sticky', stickyApp)
+// app.use(vhost('api.edleeducay.com/sticky', stickyApp))
 
 const options = {
     definition: {
