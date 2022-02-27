@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 require('dotenv').config({path: '.env'})
 
 const db = new Sequelize(
-    "sticky",
+    "portfolio",
     process.env.DATABASE_USER,
     process.env.DATABASE_PASSWORD, 
     {

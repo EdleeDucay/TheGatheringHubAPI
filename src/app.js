@@ -1,11 +1,11 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv/config')
 const swaggerJsdoc = require('swagger-jsdoc')
 const swaggerUi = require("swagger-ui-express")
 const cors = require("cors")
-const stickyApp = require('./sticky/app')
 const vhost = require('vhost')
+const stickyApp = require('./sticky/app')
+const portfolioApp = require('./portfolio/app');
+const { path } = require('./sticky/app');
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -17,8 +17,9 @@ var corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-// app.use('/sticky', stickyApp)
-app.use(vhost('api.edleeducay.com/sticky', stickyApp))
+app.use('/sticky', stickyApp)
+// app.use(vhost('portfolioApp', portfolioApp))
+// app.use(vhost('api.edleeducay.com/sticky', stickyApp))
 
 const options = {
     definition: {
