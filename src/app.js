@@ -5,7 +5,6 @@ const cors = require("cors")
 const vhost = require('vhost')
 const stickyApp = require('./sticky/app')
 const portfolioApp = require('./portfolio/app');
-const { path } = require('./sticky/app');
 
 const app = express();
 const port = process.env.PORT || 8000;

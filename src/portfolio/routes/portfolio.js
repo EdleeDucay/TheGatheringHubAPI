@@ -56,7 +56,7 @@ const portfolioController = require('../controllers/portfolio_controller')
  *          400:
  *              description: Data not formatted properly
  */
-router.get('/:userEmail', portfolio_controller.getPortfolio)
+router.get('/:userEmail', portfolioController.getPortfolio)
 
  /**
  * @swagger
@@ -76,6 +76,6 @@ router.get('/:userEmail', portfolio_controller.getPortfolio)
  *          400:
  *              description: Data not formatted properly
  */
-  router.put('/:userEmail', portfolio_controller.updatePortfolio)
+  router.put('/:userEmail', portfolioController.updatePortfolio)
 
 module.exports = router;

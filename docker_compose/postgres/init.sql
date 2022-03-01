@@ -1,1 +1,2 @@
 CREATE DATABASE sticky;
+CREATE DATABASE portfolio;
