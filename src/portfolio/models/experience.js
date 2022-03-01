@@ -16,7 +16,7 @@ const Experience = db.define('Experience', {
     },
 
 }, {
-    tableName: 'Experience',
+    tableName: 'Experiences',
     
 })
 
