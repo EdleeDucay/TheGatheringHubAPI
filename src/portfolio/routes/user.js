@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/user_controller')
+const { signinValidate, signupValidate } = require('../utils/userValidation')
 
 /**
  * @swagger
@@ -56,7 +57,10 @@ const userController = require('../controllers/user_controller')
  *          400:
  *              description: Data not formatted properly
  */
-router.post('/signup', userController.signup)
+router.post('/signup', 
+    signupValidate,
+    userController.signup
+)
 
 /**
  * @swagger
@@ -83,7 +87,10 @@ router.post('/signup', userController.signup)
  *          401:
  *              description: Returns 'User does not exist'
  */
-router.post('/signin', userController.signin)
+router.post('/signin', 
+    signinValidate,
+    userController.signin
+)
 
 /**
  * @swagger
