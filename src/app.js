@@ -17,6 +17,7 @@ app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use('/sticky', stickyApp)
+app.use('/portfolio', portfolioApp)
 // app.use(vhost('portfolioApp', portfolioApp))
 // app.use(vhost('api.edleeducay.com/sticky', stickyApp))
 

@@ -12,18 +12,18 @@ const signin = (req, res) => {
     }
 
     User.findOne({ where: {email: req.body.email}})
-    .then((user) => {
-        if (user) {
-            const validPassword = bcrypt.compareSync(req.body.password, user.password)
+    .then((User) => {
+        if (User) {
+            const validPassword = bcrypt.compareSync(req.body.password, User.password)
             if (!validPassword) {
                 res.status(401).send({error: "Invalid Password"})
             }
 
             // If password valid, create jwt token
             const token = jwt.sign(
-                user.id,
+                { id: User.id },
                 process.env.JWT_SECRET,
-                { expiresIn: req.body.rememberMe ? "30d" : '1800s'}
+                { expiresIn: req.body.rememberMe ? "30d" : "1800s"}
             )
             res.cookie("jwt", token, {
                 maxAge: req.body.rememberMe ? 30*24*60*60*1000 : 1800, // 30 days vs 30 mins
@@ -59,9 +59,9 @@ const signup = (req, res) => {
     })
     .then((User) => {
         const token = jwt.sign(
-            user.id,
+            { id: User.id },
             process.env.JWT_SECRET,
-            { expiresIn: req.body.rememberMe ? "30d" : '1800s'}
+            { expiresIn: req.body.rememberMe ? "30d" : "1800s"}
         )
         res.cookie("jwt", token, {
             maxAge: req.body.rememberMe ? 30*24*60*60*1000 : 1800, // 30 days vs 30 mins
@@ -78,7 +78,8 @@ const signup = (req, res) => {
         })
     })
     .catch(error => {
-        res.status(500).json({error: 'Error Creating User: \n' + error})
+        console.log(error)
+        res.status(500).json({error: error.toString()})
     })
 }
 
@@ -91,10 +92,8 @@ const signout = (req, res) => {
     res.send({message: "User has been signed out"})
 }
 
-const userController = {
+export {
     signup,
     signin,
     signout
 }
-
-export default userController;

@@ -106,10 +106,10 @@ router.post('/login', async (request, response) => {
                 email: user.email,
             })
         } else {
-            response.status(400).send('Invalid Password')
+            response.status(401).send('Invalid Password')
         }
     } else {
-        response.status(401).send("User does not exist")
+        response.status(400).send("User does not exist")
     }
 })
 

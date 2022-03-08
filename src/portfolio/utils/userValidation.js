@@ -1,4 +1,6 @@
 
+const { check } = require('express-validator')
+
 export const signinValidate = [
     check("email").exists().withMessage("Email must not be empty"),
     check("password").exists().withMessage("Password must not be empty")
