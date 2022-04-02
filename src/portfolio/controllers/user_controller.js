@@ -1,8 +1,10 @@
 const User = require('../models/user')
 const {validationResult} = require('express-validator')
 const bcrypt = require('bcrypt')
+const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const dotenv = require('dotenv')
+
 dotenv.config();
 
 const signin = (req, res) => {
@@ -36,6 +38,7 @@ const signin = (req, res) => {
                     id: User.id,
                     email: User.email,
                     username: User.username,
+                    apiKey: User.apiKey,
                 }
             })
 
@@ -55,7 +58,8 @@ const signup = (req, res) => {
     User.create({
         username: req.body.username,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, 8)
+        password: bcrypt.hashSync(req.body.password, 8),
+        apiKey: crypto.randomBytes(32).toString('hex')
     })
     .then((User) => {
         const token = jwt.sign(
@@ -74,6 +78,7 @@ const signup = (req, res) => {
                 id: User.id,
                 email: User.email,
                 username: User.username,
+                apiKey: User.apiKey,
             }
         })
     })
@@ -92,8 +97,27 @@ const signout = (req, res) => {
     res.send({message: "User has been signed out"})
 }
 
+const generateApiKey = (req, res) => {
+    // Creates a new api key (will replace old key)
+    if (!req.body.id) {
+        res.status(400).send({error: "No user id provided"})
+    }
+
+    User.findOne({where: {id: req.body.id}})
+    .then((User) => {
+        if (!User) {
+            res.status(404).send({error: "User not found"})
+        } 
+        const newApiKey = crypto.randomBytes(32).toString('hex')
+        User.update({apiKey: newApiKey}).then(() => {
+            res.status(200).send({apiKey: newApiKey})
+        })
+    })
+}
+
 export {
     signup,
     signin,
-    signout
+    signout,
+    generateApiKey
 }

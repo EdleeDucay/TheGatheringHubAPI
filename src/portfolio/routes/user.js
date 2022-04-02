@@ -110,4 +110,22 @@ router.post('/signin',
  */
 router.post('/signout', userController.signout)
 
+/**
+ * @swagger
+ * /users/generateApiKey:
+ *  post:
+ *      tags:
+ *      - Portfolio
+ *      summary: Generates a new API Key
+ *      description: Replaces old api key in the process
+ *      responses:
+ *          200:
+ *              description: 
+ *          400:
+ *              description: 
+ *          401:
+ *              description: 
+ */
+ router.get('/generateApiKey', userController.generateApiKey)
+
 module.exports = router;
