@@ -3,7 +3,7 @@ const app = express();
 const db = require("./config/database.js")
 const users = require('./routes/user')
 // const projects = require('./routes/project')
-// const portfolio = require('./routes/portfolio')
+const portfolio = require('./routes/portfolio')
 // const experiences = require('./routes/experience')
 
 db.authenticate()
@@ -16,7 +16,7 @@ db.authenticate()
 
 app.use('/users', users)
 // app.use('/projects', projects)
-// app.use('/portfolio', portfolio)
+app.use('/portfolios', portfolio)
 // app.use('/experiences', experiences)
 
 app.get('/', function(request, response) {

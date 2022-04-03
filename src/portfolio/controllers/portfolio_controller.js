@@ -8,7 +8,11 @@ const getPortfolio = (req, res) => {
 }
 
 const updatePortfolio = (req, res) => {
-
+    console.log(req.body.currentUserId)
+    return res.status(200).send({id: req.body.currentUserId})
+    Portfolio.findOrCreate({
+        where: {id: req.body.id}
+    })
 }
 
 export {

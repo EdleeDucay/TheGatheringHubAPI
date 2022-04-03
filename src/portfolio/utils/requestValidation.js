@@ -3,7 +3,8 @@ const User = require('../models/user')
 const dotenv = require('dotenv')
 dotenv.config();
 
-const validateRequest = (req, res, next) => {
+// For every request authorize using a jwt token or apikey
+export const validateRequest = (req, res, next) => {
     const token = req.headers["x-access-token"] || req.cookies?.jwt;
     const apiKey = req.headers["authorization"];
 
@@ -17,9 +18,9 @@ const validateRequest = (req, res, next) => {
             process.env.JWT_SECRET,
             (error, decoded) => {
                 if (error) {
-                    res.status(401).send({error: "Invalid JWT Token"})
+                    return res.status(401).send({error: "Invalid JWT Token"})
                 }
-                req.userId = decoded?.id
+                req.body.currentUserId = decoded?.id
                 next()
             }
         )
@@ -27,20 +28,11 @@ const validateRequest = (req, res, next) => {
         User.findOne({ where: {apiKey: apiKey} })
         .then((user) => {
             if(!user) {
-                res.status(401).send({ error: "No user exists with such API Key"})
+                return res.status(401).send({ error: "No user exists with such API Key"})
             }
             
-            jwt.verify(
-                apiKey,
-                process.env.JWT_SECRET,
-                (error, decoded) => {
-                    if (error) {
-                        res.status(401).send({ error: "Invalid API Key"})
-                    }
-                    req.userId = decoded?.id
-                    next()
-                }
-            )
+            req.body.currentUserId = user.id
+            next()
         })
     }
 }

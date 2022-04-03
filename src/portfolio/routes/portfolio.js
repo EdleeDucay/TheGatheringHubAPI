@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const portfolioController = require('../controllers/portfolio_controller')
+const {validateRequest} = require('../utils/requestValidation')
+
+router.use(validateRequest)
 
 /**
  * @swagger
@@ -40,7 +43,7 @@ const portfolioController = require('../controllers/portfolio_controller')
  
  /**
  * @swagger
- * /portfolios/{userEmail}:
+ * /portfolios/{userId}:
  *  get:
  *      tags:
  *      - Portfolio
@@ -56,11 +59,11 @@ const portfolioController = require('../controllers/portfolio_controller')
  *          400:
  *              description: Data not formatted properly
  */
-router.get('/:userEmail', portfolioController.getPortfolio)
+router.get('/:userId', portfolioController.getPortfolio)
 
  /**
  * @swagger
- * /portfolios/{userEmail}:
+ * /portfolios/{userId}:
  *  put:
  *      tags:
  *      - Portfolio
@@ -76,6 +79,6 @@ router.get('/:userEmail', portfolioController.getPortfolio)
  *          400:
  *              description: Data not formatted properly
  */
-  router.put('/:userEmail', portfolioController.updatePortfolio)
+  router.put('/:userId', portfolioController.updatePortfolio)
 
 module.exports = router;
