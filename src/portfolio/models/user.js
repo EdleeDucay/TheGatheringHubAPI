@@ -28,20 +28,20 @@ const User = db.define('User', {
 })
 
 User.hasOne(Portfolio, {
-    sourceKey: 'email',
-    foreignKey: 'userEmail',
+    sourceKey: 'id',
+    foreignKey: 'userId',
     onDelete: 'CASCADE'
 })
 
 User.hasMany(Project, {
-    sourceKey: 'email',
-    foreignKey: 'userEmail',
+    sourceKey: 'id',
+    foreignKey: 'userId',
     onDelete: 'CASCADE'
 })
 
 User.hasMany(Experience, {
-    sourceKey: 'email',
-    foreignKey: 'userEmail',
+    sourceKey: 'id',
+    foreignKey: 'userId',
     onDelete: 'CASCADE'
 })
 
