@@ -20,7 +20,7 @@ export const validateRequest = (req, res, next) => {
                 if (error) {
                     return res.status(401).send({error: "Invalid JWT Token"})
                 }
-                req.body.currentUserId = decoded?.id
+                res.locals.currentUserId = decoded?.id
                 next()
             }
         )
@@ -31,7 +31,7 @@ export const validateRequest = (req, res, next) => {
                 return res.status(401).send({ error: "No user exists with such API Key"})
             }
             
-            req.body.currentUserId = user.id
+            res.locals.currentUserId = user.id
             next()
         })
     }

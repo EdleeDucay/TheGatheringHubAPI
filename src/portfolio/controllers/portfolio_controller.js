@@ -1,16 +1,15 @@
-const User = require('../models/user')
 const Portfolio = require('../models/portfolio')
 const dotenv = require('dotenv')
 dotenv.config();
 
 const getPortfolio = (req, res) => {
     Portfolio.findOne({
-        where: {userId: req.body.currentUserId}
+        where: {userId: res.locals.currentUserId}
     })
     .then((portfolio) => {
         if (!portfolio) {
             return res.status(400).send({
-                error: `No portfolio found with id: ${req.body.currentUserId}`
+                error: `No portfolio found with id: ${res.locals.currentUserId}`
             })
         }
 
@@ -19,13 +18,17 @@ const getPortfolio = (req, res) => {
 }
 
 const updatePortfolio = (req, res) => {
+    if (res.locals.currentUserId != req.params.userId) {
+        return res.status(401).send({error: "Unauthorized"})
+    }
+
     Portfolio.findOrCreate({
-        where: {userId: req.body.currentUserId}
+        where: {userId: res.locals.currentUserId}
     })
     .then(async ([portfolio, created]) => {
         if (!created && !portfolio) {
             return res.status(400).send({
-                error: `Error finding/creating portfolio for id: ${req.body.currentUserId}`
+                error: `Error finding/creating portfolio for id: ${res.locals.currentUserId}`
             })
         }
 

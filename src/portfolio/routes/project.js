@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/project_controller')
+const {validateRequest} = require('../utils/requestValidation')
 
+router.use(validateRequest)
 /**
  * @swagger
  *  components:

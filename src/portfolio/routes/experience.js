@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const experienceController = require('../controllers/experience_controller')
+const {validateRequest} = require('../utils/requestValidation')
 
+router.use(validateRequest)
 /**
  * @swagger
  *  components:
@@ -31,7 +33,7 @@ const experienceController = require('../controllers/experience_controller')
  
  /**
  * @swagger
- * /experience/{userEmail}:
+ * /experience/{userId}:
  *  post:
  *      tags:
  *      - Portfolio
@@ -47,11 +49,11 @@ const experienceController = require('../controllers/experience_controller')
  *          400:
  *              description: Data not formatted properly
  */
-router.post('/:userEmail', experienceController.createExperience)
+router.post('/:userId', experienceController.createExperience)
 
  /**
  * @swagger
- * /experiences/{userEmail}:
+ * /experiences/{userId}:
  *  get:
  *      tags:
  *      - Portfolio
@@ -66,12 +68,14 @@ router.post('/:userEmail', experienceController.createExperience)
  *                          $ref: '#/components/schemas/Experience'
  *          400:
  *              description: Data not formatted properly
+ *          404:
+ *              description: No experiences found
  */
-router.get('/:userEmail', experienceController.getExperiences)
+router.get('/:userId', experienceController.getExperiences)
 
 /**
  * @swagger
- * /experiences/{experienceId}:
+ * /experiences/{userId}/experience/{experienceId}:
  *  put:
  *      tags:
  *      - Portfolio
@@ -91,12 +95,15 @@ router.get('/:userEmail', experienceController.getExperiences)
  *                          $ref: '#/components/schemas/Experience'
  *          204:
  *              description: Experience does not exist
+ *          400:
+ *              description: Data not formatted properly
+ * 
  */
- router.put('/:experienceId', experienceController.updateExperience)
+ router.put('/:userId/experience/:experienceId', experienceController.updateExperience)
 
  /**
  * @swagger
- * /experiences/{experienceId}:
+ * /experiences/{userId}/experience/{experienceId}:
  *  delete:
  *      tags:
  *      - Portfolio
@@ -107,6 +114,6 @@ router.get('/:userEmail', experienceController.getExperiences)
  *          204:
  *              description: Returns the message 'Experience does not Exist'
  */
-router.delete('/:experienceId', experienceController.deleteExperience)
+router.delete('/:userId/experience/:experienceId', experienceController.deleteExperience)
 
 module.exports = router;
