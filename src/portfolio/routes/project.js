@@ -33,7 +33,7 @@ router.use(validateRequest)
  
  /**
  * @swagger
- * /projects/{userEmail}:
+ * /projects/{userId}:
  *  post:
  *      tags:
  *      - Portfolio
@@ -49,11 +49,11 @@ router.use(validateRequest)
  *          400:
  *              description: Data not formatted properly
  */
-router.post('/:userEmail', projectController.createProject)
+router.post('/:userId', projectController.createProject)
 
  /**
  * @swagger
- * /projects/{userEmail}:
+ * /projects/{userId}:
  *  get:
  *      tags:
  *      - Portfolio
@@ -69,7 +69,7 @@ router.post('/:userEmail', projectController.createProject)
  *          400:
  *              description: Data not formatted properly
  */
-router.get('/:userEmail', projectController.getProjects)
+router.get('/:userId', projectController.getProjects)
 
 /**
  * @swagger
@@ -94,7 +94,7 @@ router.get('/:userEmail', projectController.getProjects)
  *          204:
  *              description: Project does not exist
  */
- router.put('/:projectId', projectController.updateProject)
+ router.put('/userId/projects/:projectId', projectController.updateProject)
 
  /**
  * @swagger
@@ -109,6 +109,6 @@ router.get('/:userEmail', projectController.getProjects)
  *          204:
  *              description: Returns the message 'Project does not Exist'
  */
-router.delete('/:projectId', projectController.deleteProject)
+router.delete('/userId/projects/:projectId', projectController.deleteProject)
 
 module.exports = router;
