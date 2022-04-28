@@ -94,7 +94,7 @@ router.get('/:userId', projectController.getProjects)
  *          204:
  *              description: Project does not exist
  */
- router.put('/userId/projects/:projectId', projectController.updateProject)
+ router.put('/:userId/project/:projectId', projectController.updateProject)
 
  /**
  * @swagger
@@ -109,6 +109,6 @@ router.get('/:userId', projectController.getProjects)
  *          204:
  *              description: Returns the message 'Project does not Exist'
  */
-router.delete('/userId/projects/:projectId', projectController.deleteProject)
+router.delete('/:userId/project/:projectId', projectController.deleteProject)
 
 module.exports = router;

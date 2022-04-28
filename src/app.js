@@ -5,6 +5,7 @@ const cors = require("cors")
 const vhost = require('vhost')
 const stickyApp = require('./sticky/app')
 const portfolioApp = require('./portfolio/app');
+const fileUpload = require('express-fileupload')
 
 const app = express();
 const port = process.env.PORT || 8000;
@@ -16,6 +17,11 @@ var corsOptions = {
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(fileUpload({
+    limits: {
+        fileSize: 2 * 1024 * 1024 * 1024
+    }
+}))
 app.use('/sticky', stickyApp)
 app.use('/portfolio', portfolioApp)
 // app.use(vhost('portfolioApp', portfolioApp))

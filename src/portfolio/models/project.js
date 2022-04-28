@@ -11,9 +11,15 @@ const Project = db.define('Project', {
     techStack: {
         type: DataTypes.ARRAY(DataTypes.STRING),
     },
-    imageUrl: {
+    imageType: {
         type: DataTypes.STRING,
     },
+    imageName: {
+        type: DataTypes.STRING,
+    },
+    imageData: {
+        type: DataTypes.BLOB('long')
+    }
 }, {
     tableName: 'Projects',
     

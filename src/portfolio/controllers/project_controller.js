@@ -1,7 +1,6 @@
 const Project = require('../models/project')
 const {validationResult} = require('express-validator')
 
-
 const createProject = (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -12,14 +11,24 @@ const createProject = (req, res) => {
         return res.status(401).send({error: "Unauthorized"})
     }
 
+    if (typeof req.files === 'undefined') {
+        return res.status(400).send({error: "Project missing image"})
+    } 
+    if (typeof req.files.image === 'undefined') {
+        return res.status(400).send({error: "No file with key 'image' found"})
+    }
+    const {mimetype, name, data} = req.files.image
+
     Project.create({
         userId: res.locals.currentUserId,
         name: req.body.name,
         description: req.body.description,
         techStack: req.body.techStack,
-        imageUrl: req.body.imageUrl
+        imageType: mimetype,
+        imageName: name,
+        imageData: data,
     })
-    .then((project) => {
+    .then(async (project) => {
         res.status(201).send(project)
     })
     .catch((error) => res.status(400).send({error: error}))
@@ -44,7 +53,13 @@ const getProjects = (req, res) => {
             return res.status(404).send({error: "No projects found"})
         }
 
-        return res.status(200).send(projects)
+        const processedProjects = projects.map(project => {
+            const processImage = project.imageData.toString('base64')
+            project['imageData'] = processImage
+            return project
+        })
+
+        return res.status(200).send(processedProjects)
     })
     .catch((error) => res.status(400).send({error: error}))
 }
@@ -53,6 +68,14 @@ const updateProject = (req, res) => {
     if (res.locals.currentUserId != req.params.userId) {
         return res.status(401).send({error: "Unauthorized"})
     }
+
+    if (typeof req.files === 'undefined') {
+        return res.status(400).send({error: "Project missing image"})
+    } 
+    if (typeof req.files.image === 'undefined') {
+        return res.status(400).send({error: "No file with key 'image' found"})
+    }
+    const {mimetype, name, data} = req.files.image
 
     Project.findOne({
         where: {id: req.params.projectId}
@@ -69,7 +92,9 @@ const updateProject = (req, res) => {
             name: req.body.name,
             description: req.body.description,
             techStack: req.body.techStack,
-            imageUrl: req.body.imageUrl
+            imageType: mimetype,
+            imageName: name,
+            imageData: data,
         })
         .then((project) => {
             res.status(200).send(project)
@@ -89,10 +114,10 @@ const deleteProject = (req, res) => {
     }
 
     Project.findOne({
-        where: {id: id.params.projectId}
+        where: {id: req.params.projectId}
     })
     .then(async (project) => {
-        if (!experience) {
+        if (!project) {
             return res.status(404).send({
                 error: `No project found with id: ${req.params.projectId}`
             })
