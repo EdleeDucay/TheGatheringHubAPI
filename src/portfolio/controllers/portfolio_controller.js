@@ -34,7 +34,7 @@ const updatePortfolio = (req, res) => {
 
         portfolio.update({
             firstname: req.body.firstname,
-            lastame: req.body.lastname,
+            lastname: req.body.lastname,
             email: req.body.email,
             linkedin: req.body.linkedin,
             github: req.body.github,

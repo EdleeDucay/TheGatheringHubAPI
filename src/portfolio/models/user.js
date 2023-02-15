@@ -4,6 +4,7 @@ const {DataTypes} = require('sequelize')
 const Portfolio = require('./portfolio')
 const Experience = require('./experience')
 const Project = require('./project')
+const Resume = require('./resume')
 
 const User = db.define('User', {
     username: {
@@ -21,6 +22,10 @@ const User = db.define('User', {
     },
     apiKey: {
         type: DataTypes.STRING
+    },
+    admin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
 }, {
     tableName: 'Users',
@@ -42,6 +47,12 @@ User.hasMany(Project, {
 User.hasMany(Experience, {
     sourceKey: 'id',
     foreignKey: 'userId',
+    onDelete: 'CASCADE'
+})
+
+User.hasOne(Resume, {
+    sourceKey: 'email',
+    foreignKey: 'owner',
     onDelete: 'CASCADE'
 })
 

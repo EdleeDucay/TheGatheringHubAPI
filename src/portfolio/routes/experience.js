@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const experienceController = require('../controllers/experience_controller')
 const {validateRequest} = require('../utils/requestValidation')
+const multer  = require('multer');
+const upload = multer();
 
+router.use(upload.any())
 router.use(validateRequest)
 /**
  * @swagger
@@ -22,27 +25,32 @@ router.use(validateRequest)
  *                      description: The date of the experience
  *                  tasks:
  *                      type: array
+ *                      items: 
+ *                          type: string
  *                      description: An array of tasks the experience holds
  *                  createdAt:
  *                      type: date
  *                      description: The date user was created
+ *                      required: false
  *                  updatedAt:
  *                      type: date
  *                      description: The date user was last updated
+ *                      required: false
  */
  
  /**
  * @swagger
- * /experience/{userId}:
+ * /experiences/{userId}:
  *  post:
  *      tags:
  *      - Portfolio
  *      summary: Creates an Experience
- *      requestBody
+ *      requestBody:
  *          content:
- *              application/json:
- *                  scheme:
- *                      $ref: "#/components/schemas/Experience"
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Experience'
  *      responses:
  *          201:
  *              description: Returns the created Experience
@@ -80,11 +88,12 @@ router.get('/:userId', experienceController.getExperiences)
  *      tags:
  *      - Portfolio
  *      summary: Update an Experience
- *      requestBody
+ *      requestBody:
  *          content:
- *              application/json:
- *                  scheme:
- *                      $ref: "#/components/schemas/Experience"
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Experience'
  *      responses:
  *          200:
  *              description: Returns the updated Experience

@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const projectController = require('../controllers/project_controller')
 const {validateRequest} = require('../utils/requestValidation')
+const multer  = require('multer');
+const upload = multer();
 
+router.use(upload.single("image"))
 router.use(validateRequest)
 /**
  * @swagger
@@ -19,9 +22,12 @@ router.use(validateRequest)
  *                      description: The description of the project
  *                  techStack:
  *                      type: array
+ *                      items:
+ *                          type: string
  *                      description: The array of the technologies
- *                  imageUrl:
+ *                  image:
  *                      type: string
+ *                      format: byte 
  *                      description: The image url of the project
  *                  createdAt:
  *                      type: date
@@ -37,19 +43,27 @@ router.use(validateRequest)
  *  post:
  *      tags:
  *      - Portfolio
- *      summary: Creates a Project
- *      requestBody
+ *      summary: Creates a project for the user
+ *      requestBody:
  *          content:
- *              application/json:
- *                  scheme:
- *                      $ref: "#/components/schemas/Project"
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Project'
  *      responses:
- *          201:
- *              description: Returns the created Project
+ *          200:
+ *              description: Returns the created project
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Project'
  *          400:
  *              description: Data not formatted properly
  */
-router.post('/:userId', projectController.createProject)
+router.post(
+    '/:userId',
+    projectController.createProject)
 
  /**
  * @swagger
@@ -71,18 +85,20 @@ router.post('/:userId', projectController.createProject)
  */
 router.get('/:userId', projectController.getProjects)
 
+
 /**
  * @swagger
- * /projects/{projectId}:
+ * /{userId}/project/{projectId}:
  *  put:
  *      tags:
  *      - Portfolio
- *      summary: Update a project
- *      requestBody
+ *      summary: Deletes a project
+ *      requestBody:
  *          content:
- *              application/json:
- *                  scheme:
- *                      $ref: "#/components/schemas/Project"
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Project'
  *      responses:
  *          200:
  *              description: Returns the updated Project
@@ -92,13 +108,13 @@ router.get('/:userId', projectController.getProjects)
  *                          type: object
  *                          $ref: '#/components/schemas/Project'
  *          204:
- *              description: Project does not exist
+ *              description: Returns the message 'Project does not Exist'
  */
  router.put('/:userId/project/:projectId', projectController.updateProject)
 
- /**
+/**
  * @swagger
- * /projects/{projectId}:
+ * /{userId}/projects/{projectId}:
  *  delete:
  *      tags:
  *      - Portfolio

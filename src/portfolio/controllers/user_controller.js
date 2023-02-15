@@ -59,7 +59,8 @@ const signup = (req, res) => {
         username: req.body.username,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 8),
-        apiKey: crypto.randomBytes(32).toString('hex')
+        apiKey: crypto.randomBytes(32).toString('hex'),
+        admin: process.env.ADMIN_EMAIL == req.body.email
     })
     .then((User) => {
         const token = jwt.sign(
@@ -83,7 +84,6 @@ const signup = (req, res) => {
         })
     })
     .catch(error => {
-        console.log(error)
         res.status(500).json({error: error.toString()})
     })
 }

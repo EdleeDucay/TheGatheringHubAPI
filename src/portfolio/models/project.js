@@ -22,7 +22,6 @@ const Project = db.define('Project', {
     }
 }, {
     tableName: 'Projects',
-    
 })
 
 module.exports = Project

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const dotenv = require('dotenv')
+const {validationResult} = require('express-validator')
 dotenv.config();
 
 // For every request authorize using a jwt token or apikey
@@ -34,5 +35,18 @@ export const validateRequest = (req, res, next) => {
             res.locals.currentUserId = user.id
             next()
         })
+    }
+}
+
+export const validate = (validations) => {
+    return async (req, res, next) => {
+        await Promise.all(validations.map(validation => validation.run(req)))
+
+        const errors = validationResult(req)
+        if (errors.isEmpty()) {
+            return next();
+        }
+
+        res.status(400).send({ error: errors.array() })
     }
 }
