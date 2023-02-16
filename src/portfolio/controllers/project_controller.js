@@ -26,6 +26,7 @@ const createProject = (req, res) => {
         name: req.body.name,
         description: req.body.description,
         techStack: req.body.techStack,
+        link: req.body.link,
         imageType: mimetype,
         imageName: originalname,
         imageData: buffer,
@@ -34,7 +35,6 @@ const createProject = (req, res) => {
         res.status(201).send({msg: "Project Created"})
     })
     .catch((error) => res.status(400).send({error: error}))
-
 }
 
 const getProjects = (req, res) => {
@@ -70,13 +70,15 @@ const updateProject = (req, res) => {
         return res.status(401).send({error: "Unauthorized"})
     }
 
-    if (!req.files) {
+    if (!req.file) {
         return res.status(400).send({error: "Project missing image"})
     } 
-    if (typeof req.files.image === 'undefined') {
+
+    if (req.file.fieldname !== 'image') {
         return res.status(400).send({error: "No file with key 'image' found"})
     }
-    const {mimetype, name, data} = req.files.image
+
+    const {mimetype, originalname, buffer} = req.file
 
     Project.findOne({
         where: {id: req.params.projectId}
@@ -93,9 +95,10 @@ const updateProject = (req, res) => {
             name: req.body.name,
             description: req.body.description,
             techStack: req.body.techStack,
+            link: req.body.link,
             imageType: mimetype,
-            imageName: name,
-            imageData: data,
+            imageName: originalname,
+            imageData: buffer,
         })
         .then(() => {
             res.status(200).send({msg: "Project Updated"})

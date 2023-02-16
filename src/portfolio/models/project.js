@@ -11,6 +11,9 @@ const Project = db.define('Project', {
     techStack: {
         type: DataTypes.ARRAY(DataTypes.STRING),
     },
+    link: {
+        type: DataTypes.STRING,
+    },
     imageType: {
         type: DataTypes.STRING,
     },

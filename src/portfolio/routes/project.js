@@ -20,6 +20,9 @@ router.use(validateRequest)
  *                  description:
  *                      type: string
  *                      description: The description of the project
+ *                  link:
+ *                      type: string
+ *                      description: The link to the project
  *                  techStack:
  *                      type: array
  *                      items:

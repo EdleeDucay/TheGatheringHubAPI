@@ -16,6 +16,7 @@ const createExperience = (req, res) => {
         employer: req.body.employer,
         date: req.body.date,
         tasks: req.body.tasks,
+        order: req.body.order,
         userId: res.locals.currentUserId
     })
     .then((experience) => {
@@ -36,7 +37,10 @@ const getExperiences = (req, res) => {
     
 
     Experience.findAll({
-        where: {userId: res.locals.currentUserId}
+        where: {userId: res.locals.currentUserId},
+        order: [
+            ['order', 'DESC']
+        ]
     })
     .then((experiences) => {
         if (!experiences.length) {
@@ -68,6 +72,7 @@ const updateExperience = (req, res) => {
             employer: req.body.employer,
             date: req.body.date,
             tasks: req.body.tasks,
+            order: req.body.order,
             userId: res.locals.currentUserId
         })
         .then((experience) => {

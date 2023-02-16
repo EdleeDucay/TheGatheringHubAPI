@@ -4,12 +4,12 @@ dotenv.config();
 
 const getPortfolio = (req, res) => {
     Portfolio.findOne({
-        where: {userId: res.locals.currentUserId}
+        where: {userId: req.params.userId}
     })
     .then((portfolio) => {
         if (!portfolio) {
             return res.status(400).send({
-                error: `No portfolio found with id: ${res.locals.currentUserId}`
+                error: `No portfolio found with id: ${req.params.userId}`
             })
         }
 

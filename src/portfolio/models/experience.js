@@ -14,7 +14,10 @@ const Experience = db.define('Experience', {
     tasks: {
         type: DataTypes.ARRAY(DataTypes.STRING),
     },
-
+    order: {
+        type: DataTypes.INTEGER,
+        defaultValue: -1
+    },
 }, {
     tableName: 'Experiences',
     
