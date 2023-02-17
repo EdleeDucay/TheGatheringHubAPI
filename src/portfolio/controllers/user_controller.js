@@ -115,7 +115,7 @@ const generateApiKey = (req, res) => {
     })
 }
 
-export {
+module.exports = {
     signup,
     signin,
     signout,

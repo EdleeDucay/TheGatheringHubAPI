@@ -5,7 +5,7 @@ const {validationResult} = require('express-validator')
 dotenv.config();
 
 // For every request authorize using a jwt token or apikey
-export const validateRequest = (req, res, next) => {
+const validateRequest = (req, res, next) => {
     const token = req.headers["x-access-token"] || req.cookies?.jwt;
     const apiKey = req.headers["authorization"];
 
@@ -38,7 +38,7 @@ export const validateRequest = (req, res, next) => {
     }
 }
 
-export const validate = (validations) => {
+const validate = (validations) => {
     return async (req, res, next) => {
         await Promise.all(validations.map(validation => validation.run(req)))
 
@@ -49,4 +49,9 @@ export const validate = (validations) => {
 
         res.status(400).send({ error: errors.array() })
     }
+}
+
+module.exports = {
+    validateRequest,
+    validate
 }

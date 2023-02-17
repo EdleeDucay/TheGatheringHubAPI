@@ -131,7 +131,7 @@ const deleteProject = (req, res) => {
     })
 }
 
-export {
+module.exports = {
     createProject,
     getProjects,
     updateProject,

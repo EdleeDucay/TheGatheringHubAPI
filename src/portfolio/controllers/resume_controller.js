@@ -66,7 +66,7 @@ const updateResume = (req, res) => {
     }
 }
  
-export {
+module.exports = {
     getResume,
     updateResume
 }

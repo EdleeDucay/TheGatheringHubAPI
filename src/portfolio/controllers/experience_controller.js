@@ -106,7 +106,7 @@ const deleteExperience = (req, res) => {
     })
 }
 
-export {
+module.exports = {
     createExperience,
     getExperiences,
     updateExperience,

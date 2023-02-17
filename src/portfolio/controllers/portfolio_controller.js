@@ -48,7 +48,7 @@ const updatePortfolio = (req, res) => {
     })
 }
 
-export {
+module.exports = {
     getPortfolio,
     updatePortfolio
 }

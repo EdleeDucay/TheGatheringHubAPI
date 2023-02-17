@@ -2,12 +2,12 @@
 const { check } = require('express-validator')
 const User = require('../models/user')
 
-export const signinValidate = [
+const signinValidate = [
     check("email").exists().withMessage("Email must not be empty"),
     check("password").exists().withMessage("Password must not be empty")
 ]
 
-export const signupValidate = [
+const signupValidate = [
     check("username")
         .exists()
         .withMessage("Username must not be empty"),
@@ -22,7 +22,7 @@ export const signupValidate = [
         .withMessage("Password must be length greater than 6"),
 ]
 
-export const isAdmin = (req, res, next) => {
+const isAdmin = (req, res, next) => {
     const apiKey = req.headers["authorization"];
 
     User.findOne({where: {apiKey: apiKey}})
@@ -36,3 +36,8 @@ export const isAdmin = (req, res, next) => {
     next();
 }
  
+module.exports = {
+    signinValidate,
+    signupValidate,
+    isAdmin
+}
