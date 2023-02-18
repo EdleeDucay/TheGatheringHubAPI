@@ -20,14 +20,16 @@ const getResume = (req, res) => {
         res.setHeader('Content-Length', Buffer.byteLength(resume.value))
         if (req.query.image === 'png') {
             res.setHeader('Content-Type', 'image/png');
-            const image = pdfToPng(resume.value, {
+            pdfToPng(resume.value, {
                 disableFontFace: true,
                 useSystemFonts: false,
                 viewportScale: 2.0,
                 outputFileMask: './',
                 pagesToProcess: [1],
-            });
-            res.send(image[0].content)
+            })
+            .then((image) => {
+                res.send(image[0].content)})
+            .catch((err) => res.status(400).send(err))
         } else {
             res.setHeader('Content-Type', 'application/pdf');
             if (req.query.download === 'true') {
